@@ -3,589 +3,357 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Rayyan Hasan Goraya — Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Rayyan Hasan Goraya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Share+Tech+Mono&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --neon: #c8f000;
-      --neon-dim: #8aaa00;
-      --neon-glow: rgba(200,240,0,0.35);
-      --bg: #050805;
-      --panel: #0c120c;
-      --panel2: #0f180f;
-      --border: #2a3e1a;
+      --neon-dim: #7a9900;
+      --neon-glow: rgba(200,240,0,0.3);
+      --bg: #040604;
+      --bg2: #080d08;
+      --panel: #0b110b;
+      --panel2: #0e160e;
+      --border: #1e2e14;
+      --border2: #2a3e1a;
       --orange: #ff8c00;
-      --orange-dim: #cc6600;
-      --white: #d8ecc0;
-      --text-dim: #6a8850;
+      --orange-dim: #9c5200;
+      --red: #ff3333;
+      --white: #cce8a8;
+      --muted: #5a7840;
+      --dim: #3a5225;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--neon);
       font-family: 'Share Tech Mono', monospace;
       min-height: 100vh;
-      user-select: none;
+      overflow-x: hidden;
     }
-    /* scanlines */
+
+    /* ── scanlines + vignette overlay ── */
     body::after {
       content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
-      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.13) 2px, rgba(0,0,0,0.13) 4px);
-    }
-    /* vignette */
-    body::before {
-      content:''; position:fixed; inset:0; pointer-events:none; z-index:9998;
-      background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.55) 100%);
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.10) 3px, rgba(0,0,0,0.10) 4px),
+        radial-gradient(ellipse 120% 100% at 50% 0%, transparent 40%, rgba(0,0,0,0.7) 100%);
     }
 
-    /* ===== LOADING ===== */
+    /* ── animated grid background ── */
+    body::before {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+      background-image:
+        linear-gradient(rgba(200,240,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,240,0,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridShift 20s linear infinite;
+    }
+    @keyframes gridShift { 0%{background-position:0 0} 100%{background-position:40px 40px} }
+
+    /* ── LOADING ── */
     #loading {
-      position:fixed; inset:0; background:#000; z-index:5000;
+      position:fixed; inset:0; background:#000; z-index:8000;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.9s ease;
     }
     #loading.out { opacity:0; pointer-events:none; }
-
-    .load-shield {
-      width:100px; margin-bottom:28px;
-      animation: shieldPulse 1.8s ease-in-out infinite;
-      filter: drop-shadow(0 0 12px var(--neon-glow));
+    .load-logo {
+      width:80px; height:80px; margin-bottom:32px; position:relative;
+      animation: logoPulse 2s ease-in-out infinite;
     }
-    @keyframes shieldPulse {
-      0%,100%{ filter: drop-shadow(0 0 8px var(--neon-glow)); }
-      50%{ filter: drop-shadow(0 0 28px rgba(200,240,0,0.6)); }
+    @keyframes logoPulse {
+      0%,100%{ filter:drop-shadow(0 0 8px rgba(200,240,0,0.5)); }
+      50%{ filter:drop-shadow(0 0 24px rgba(200,240,0,0.9)); }
     }
-    .load-dept {
-      font-family:'Orbitron',monospace; font-size:11px; font-weight:700;
-      letter-spacing:5px; color:var(--neon); text-shadow:0 0 16px var(--neon-glow);
-      margin-bottom:5px; text-align:center;
+    .load-name {
+      font-family:'Orbitron',monospace; font-size:13px; font-weight:800;
+      letter-spacing:6px; color:var(--neon); margin-bottom:4px;
+      text-shadow: 0 0 20px var(--neon-glow);
     }
-    .load-sub { font-size:9px; letter-spacing:3px; color:var(--text-dim); margin-bottom:44px; }
+    .load-sub { font-size:9px; letter-spacing:4px; color:var(--muted); margin-bottom:40px; }
     .load-bar-wrap {
-      width:300px; height:3px; background:#111; border:1px solid var(--neon-dim);
-      margin-bottom:14px; overflow:hidden;
+      width:260px; height:2px; background:#111;
+      border:1px solid var(--neon-dim); margin-bottom:12px;
     }
-    .load-bar { height:100%; background:var(--neon); box-shadow:0 0 8px var(--neon-glow); width:0%; transition:width 0.12s linear; }
-    .load-msg { font-size:10px; letter-spacing:2px; color:var(--neon-dim); height:18px; }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    /* ===== MAIN LAYOUT ===== */
-    #app {
-      display:none; min-height:100vh; flex-direction:column;
+    .load-bar {
+      height:100%; background:var(--neon);
+      box-shadow: 0 0 12px var(--neon-glow);
+      width:0%; transition:width 0.15s linear;
     }
-    #app.active { display:flex; }
+    .load-msg { font-size:9px; letter-spacing:2px; color:var(--dim); height:16px; }
 
-    /* top bar */
+    /* ── LAYOUT ── */
+    #app { display:none; position:relative; z-index:1; min-height:100vh; }
+    #app.on { display:block; }
+
+    /* ── TOP BAR ── */
     .topbar {
-      background: linear-gradient(180deg,#1c2c0a,#111a08);
-      border-bottom:2px solid var(--neon-dim);
-      padding:8px 20px;
+      position:sticky; top:0; z-index:100;
+      background: rgba(4,6,4,0.92);
+      border-bottom:1px solid var(--border2);
+      backdrop-filter: blur(20px);
+      padding:0 32px;
       display:flex; align-items:center; justify-content:space-between;
-      flex-shrink:0;
-      box-shadow: 0 2px 16px rgba(200,240,0,0.08);
-      gap: 10px;
-      flex-wrap: wrap;
+      height:52px;
     }
-    .topbar-left { display:flex; align-items:center; gap:14px; min-width:0; }
-    .topbar-shield { width:30px; flex-shrink:0; }
-    .topbar-title-wrap {}
-    .topbar-title {
-      font-family:'Orbitron',monospace; font-size:9px; font-weight:700;
-      letter-spacing:4px; color:var(--neon); text-shadow:0 0 8px var(--neon-glow);
+    .topbar-left { display:flex; align-items:center; gap:12px; }
+    .tb-badge {
+      width:28px; height:28px;
+      border:1.5px solid var(--neon-dim);
+      display:flex; align-items:center; justify-content:center;
+      background:rgba(200,240,0,0.06);
     }
-    .topbar-sub { font-size:8px; letter-spacing:2px; color:var(--text-dim); margin-top:1px; }
-    .topbar-right { text-align:right; }
-    .topbar-clock { font-family:'Orbitron',monospace; font-size:11px; color:var(--neon-dim); }
-    .topbar-status { font-size:8px; letter-spacing:2px; color:var(--text-dim); margin-top:2px; }
+    .tb-badge svg { width:14px; height:14px; }
+    .tb-name { font-family:'Orbitron',monospace; font-size:10px; font-weight:700; letter-spacing:3px; color:var(--neon); }
+    .tb-sep { width:1px; height:16px; background:var(--border2); }
+    .tb-file { font-size:8px; letter-spacing:2px; color:var(--dim); }
+    .topbar-right { display:flex; align-items:center; gap:20px; }
+    .tb-clock { font-family:'Orbitron',monospace; font-size:10px; color:var(--neon-dim); letter-spacing:2px; }
+    .tb-dot { width:6px; height:6px; border-radius:50%; background:var(--neon); box-shadow:0 0 8px var(--neon); animation:dotBlink 2s ease-in-out infinite; }
+    @keyframes dotBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    .tb-status { font-size:8px; letter-spacing:2px; color:var(--neon); }
 
-    /* main body */
-    .main { display:flex; flex:1; }
+    /* ── HERO ── */
+    .hero {
+      padding: 64px 32px 48px;
+      display:grid; grid-template-columns:1fr auto;
+      gap:48px; align-items:start;
+      border-bottom:1px solid var(--border);
+      position:relative; overflow:hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(200,240,0,0.04) 0%, transparent 70%);
+    }
+    .hero-eyebrow { font-size:8px; letter-spacing:4px; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+    .hero-eyebrow::before { content:''; display:block; width:24px; height:1px; background:var(--neon-dim); }
+    .hero-name {
+      font-family:'Orbitron',monospace; font-size:clamp(28px, 5vw, 52px); font-weight:900;
+      letter-spacing:2px; line-height:1.05;
+      color:var(--neon);
+      text-shadow: 0 0 40px rgba(200,240,0,0.25);
+      margin-bottom:8px;
+    }
+    .hero-name span { color:var(--orange); }
+    .hero-role {
+      font-family:'Orbitron',monospace; font-size:11px; font-weight:600;
+      letter-spacing:4px; color:var(--muted); margin-bottom:24px;
+    }
+    .hero-desc {
+      font-family:'DM Sans',sans-serif; font-size:14px; line-height:1.8;
+      color:var(--white); max-width:560px; font-weight:300; margin-bottom:32px;
+      opacity:0.85;
+    }
+    .hero-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:32px; }
+    .htag {
+      font-size:8px; letter-spacing:2px; font-family:'Orbitron',monospace;
+      color:var(--neon-dim); border:1px solid var(--border2);
+      padding:4px 10px; background:rgba(200,240,0,0.04);
+      transition: all 0.2s;
+    }
+    .htag:hover { border-color:var(--neon-dim); color:var(--neon); background:rgba(200,240,0,0.08); }
 
-    /* ===== LEFT SIDEBAR ===== */
-    .sidebar {
-      width:260px; flex-shrink:0;
+    /* hero socials */
+    .hero-socials { display:flex; gap:10px; }
+    .social-icon-btn {
+      width:40px; height:40px; border:1px solid var(--border2);
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; color:var(--muted);
+      background:rgba(200,240,0,0.04);
+      transition:all 0.2s; cursor:pointer;
+    }
+    .social-icon-btn svg { width:18px; height:18px; }
+    .social-icon-btn:hover { border-color:var(--neon-dim); color:var(--neon); background:rgba(200,240,0,0.1); box-shadow:0 0 16px rgba(200,240,0,0.1); }
+
+    /* hero stats card */
+    .hero-card {
       background:var(--panel);
-      border-right:2px solid var(--border);
-      display:flex; flex-direction:column;
+      border:1px solid var(--border2);
+      border-top:2px solid var(--neon-dim);
+      padding:24px; min-width:200px;
+      position:relative;
+    }
+    .hero-card::before {
+      content:'PROFILE'; position:absolute; top:-1px; left:16px;
+      font-size:7px; letter-spacing:3px; font-family:'Orbitron',monospace;
+      color:var(--bg); background:var(--neon-dim); padding:1px 6px;
+    }
+    .hstat { padding:10px 0; border-bottom:1px solid var(--border); }
+    .hstat:last-child { border-bottom:none; padding-bottom:0; }
+    .hstat-k { font-size:7px; letter-spacing:3px; color:var(--dim); margin-bottom:3px; }
+    .hstat-v { font-family:'Orbitron',monospace; font-size:12px; font-weight:700; color:var(--orange); }
+    .hstat-v.g { color:var(--neon); }
+    .hstat-v.r { color:var(--red); }
+
+    /* ── MAIN CONTENT ── */
+    .layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 52px - 200px); }
+
+    /* ── SIDEBAR NAV ── */
+    .sidenav {
+      border-right:1px solid var(--border);
+      padding:32px 0;
+      position:sticky; top:52px; height:calc(100vh - 52px);
       overflow-y:auto;
     }
-    .sb-name-block {
-      background:linear-gradient(90deg,#243010,#181e0c);
-      border-bottom:2px solid var(--neon-dim);
-      padding:10px 14px;
-    }
-    .sb-label { font-size:7px; letter-spacing:3px; color:var(--text-dim); margin-bottom:3px; }
-    .sb-name {
-      font-family:'Orbitron',monospace; font-size:13px; font-weight:900;
-      color:var(--orange); letter-spacing:1px;
-    }
-    .sb-tagline { font-size:9px; color:var(--neon-dim); letter-spacing:1px; margin-top:3px; }
-
-    .sb-stats { padding:12px 14px; border-bottom:1px solid var(--border); }
-    .stat-row {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:5px 0; border-bottom:1px solid rgba(42,62,26,0.4); font-size:9px;
-    }
-    .stat-row:last-child { border-bottom:none; }
-    .stat-k { color:var(--text-dim); letter-spacing:1px; }
-    .stat-v { font-family:'Orbitron',monospace; font-size:9px; color:var(--orange); font-weight:700; }
-    .stat-v.g { color:var(--neon); }
-
-    .sb-menu { border-top:1px solid var(--border); flex:1; display:flex; flex-direction:column; }
-    .sb-menu-label { font-family:'Orbitron',monospace; font-size:8px; letter-spacing:3px; color:var(--text-dim); padding:8px 14px 4px; }
-    .menu-item {
+    .nav-label { font-size:7px; letter-spacing:3px; color:var(--dim); padding:0 20px 12px; }
+    .nav-item {
       display:flex; align-items:center; gap:10px;
-      padding:9px 14px; cursor:pointer;
-      font-family:'Orbitron',monospace; font-size:9px; font-weight:700;
-      letter-spacing:2px; color:var(--text-dim);
-      border-left:3px solid transparent; transition:all 0.12s;
+      padding:11px 20px; cursor:pointer;
+      font-family:'Orbitron',monospace; font-size:8px; font-weight:700;
+      letter-spacing:2px; color:var(--muted);
+      border-left:2px solid transparent;
+      transition:all 0.15s;
+      position:relative;
     }
-    .menu-item:hover { background:rgba(200,240,0,0.06); color:var(--neon); border-left-color:var(--neon-dim); }
-    .menu-item.on { background:rgba(200,240,0,0.12); color:var(--neon); border-left-color:var(--neon); }
-    .mi-dot { width:8px; height:8px; border:2px solid currentColor; flex-shrink:0; }
-    .mi-dot.filled { background:currentColor; }
+    .nav-item:hover { color:var(--neon); background:rgba(200,240,0,0.04); border-left-color:var(--neon-dim); }
+    .nav-item.on { color:var(--neon); background:rgba(200,240,0,0.07); border-left-color:var(--neon); }
+    .nav-item .ni-num { font-size:9px; color:var(--border2); font-family:'Orbitron',monospace; min-width:16px; }
+    .nav-item.on .ni-num { color:var(--neon-dim); }
+    .nav-item .ni-dot { width:5px; height:5px; border:1.5px solid currentColor; margin-left:auto; flex-shrink:0; }
+    .nav-item.on .ni-dot { background:currentColor; box-shadow:0 0 6px currentColor; }
 
-    .sb-socials {
-      border-top:1px solid var(--border);
-      padding:10px 14px;
-      display:flex; gap:10px;
-    }
-    .social-btn {
-      flex:1; text-align:center; text-decoration:none;
-      font-family:'Orbitron',monospace; font-size:7px; font-weight:700;
-      letter-spacing:1px; color:var(--neon-dim);
-      border:1px solid var(--border); padding:5px 4px;
-      transition:all 0.12s;
-    }
-    .social-btn:hover { color:var(--neon); border-color:var(--neon-dim); background:rgba(200,240,0,0.06); }
+    /* ── CONTENT AREA ── */
+    .content-wrap { padding:40px 40px; }
 
-    /* ===== RIGHT CONTENT ===== */
-    .content { flex:1; display:flex; flex-direction:column; overflow:hidden; }
-    .content-header {
-      background:linear-gradient(90deg,#243010,#111a08);
-      border-bottom:2px solid var(--neon-dim);
-      padding:9px 20px;
-      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
-    }
-    .content-title {
-      font-family:'Orbitron',monospace; font-size:12px; font-weight:800;
-      letter-spacing:3px; color:var(--neon); text-shadow:0 0 8px var(--neon-glow);
-    }
-    .content-id { font-size:8px; letter-spacing:2px; color:var(--text-dim); }
-    .cursor-blink { animation:blink 0.9s step-end infinite; }
-
-    .content-body {
-      flex:1; overflow-y:auto; padding:18px 20px;
-      scrollbar-width:thin; scrollbar-color:var(--neon-dim) transparent;
-      width: 100%;
-    }
-    .content-body::-webkit-scrollbar { width:3px; }
-    .content-body::-webkit-scrollbar-thumb { background:var(--neon-dim); }
-
-    .section { display:none; }
+    .section { display:none; animation:fadeIn 0.25s ease; }
     .section.on { display:block; }
+    @keyframes fadeIn { from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)} }
 
-    /* bottom bar */
-    .bottombar {
-      background:var(--panel); border-top:2px solid var(--border);
-      padding:7px 20px; display:flex; justify-content:space-between; align-items:center;
+    /* section header */
+    .sec-header {
+      display:flex; align-items:flex-end; justify-content:space-between;
+      margin-bottom:32px; padding-bottom:16px;
+      border-bottom:1px solid var(--border);
+    }
+    .sec-title { font-family:'Orbitron',monospace; font-size:22px; font-weight:800; letter-spacing:2px; color:var(--neon); line-height:1; }
+    .sec-sub { font-size:8px; letter-spacing:3px; color:var(--dim); margin-top:6px; }
+    .sec-count { font-family:'Orbitron',monospace; font-size:32px; font-weight:900; color:rgba(200,240,0,0.08); line-height:1; }
+
+    /* ── PROJECT CARDS ── */
+    .proj-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .proj-card {
+      background:var(--panel2);
+      border:1px solid var(--border);
+      padding:24px;
+      position:relative; overflow:hidden;
+      transition:all 0.2s;
+      cursor:default;
+    }
+    .proj-card::after {
+      content:''; position:absolute; top:0; left:0; right:0; height:1px;
+      background:linear-gradient(90deg, transparent, var(--neon-dim), transparent);
+      opacity:0; transition:opacity 0.2s;
+    }
+    .proj-card:hover { border-color:var(--border2); background:var(--panel); }
+    .proj-card:hover::after { opacity:1; }
+    .proj-card.featured { border-top:2px solid var(--orange-dim); grid-column:span 2; }
+    .proj-card.featured::after { background:linear-gradient(90deg, transparent, var(--orange-dim), transparent); }
+    .proj-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:7px; letter-spacing:2px; font-family:'Orbitron',monospace;
+      padding:3px 8px; margin-bottom:14px;
+    }
+    .proj-badge.live { color:var(--neon); border:1px solid rgba(200,240,0,0.3); background:rgba(200,240,0,0.07); }
+    .proj-badge.live::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--neon); box-shadow:0 0 6px var(--neon); }
+    .proj-badge.wip { color:var(--orange); border:1px solid rgba(255,140,0,0.3); background:rgba(255,140,0,0.07); }
+    .proj-badge.wip::before { content:''; width:5px; height:5px; border-radius:50%; background:var(--orange); }
+    .proj-badge.grade { color:var(--muted); border:1px solid var(--border2); }
+    .proj-name { font-family:'Orbitron',monospace; font-size:13px; font-weight:700; letter-spacing:1px; color:var(--neon); margin-bottom:6px; }
+    .proj-stack { font-size:8px; letter-spacing:2px; color:var(--orange); font-family:'Orbitron',monospace; margin-bottom:12px; }
+    .proj-desc { font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.75; color:var(--white); opacity:0.8; margin-bottom:16px; font-weight:300; }
+    .proj-links { display:flex; gap:8px; flex-wrap:wrap; }
+    .proj-link {
+      font-family:'Orbitron',monospace; font-size:7px; font-weight:700; letter-spacing:1px;
+      color:var(--neon); text-decoration:none;
+      padding:6px 14px; border:1px solid rgba(200,240,0,0.25);
+      background:rgba(200,240,0,0.05);
+      transition:all 0.15s;
+    }
+    .proj-link:hover { border-color:rgba(200,240,0,0.6); background:rgba(200,240,0,0.12); }
+
+    /* ── EXPERIENCE / TIMELINE ── */
+    .timeline { display:flex; flex-direction:column; gap:0; position:relative; }
+    .timeline::before { content:''; position:absolute; left:15px; top:8px; bottom:8px; width:1px; background:var(--border2); }
+    .tl-item {
+      display:grid; grid-template-columns:32px 1fr;
+      gap:20px; padding-bottom:32px; position:relative;
+    }
+    .tl-item:last-child { padding-bottom:0; }
+    .tl-dot {
+      width:14px; height:14px; border:2px solid var(--neon-dim);
+      background:var(--bg); margin-top:4px; position:relative; z-index:1;
       flex-shrink:0;
     }
-    .bb-btns { display:flex; gap:10px; }
-    .bb-btn {
-      font-family:'Orbitron',monospace; font-size:7px; font-weight:700;
-      letter-spacing:2px; color:var(--neon); cursor:pointer;
-      padding:5px 14px; border:1px solid var(--neon-dim);
-      background:rgba(200,240,0,0.04); transition:all 0.12s;
-    }
-    .bb-btn:hover { background:var(--neon); color:#000; }
-    .bb-btn .k { color:var(--text-dim); font-size:7px; margin-right:4px; }
-    .bb-info { font-size:8px; letter-spacing:2px; color:var(--text-dim); }
+    .tl-dot.active { background:var(--neon); border-color:var(--neon); box-shadow:0 0 12px var(--neon-glow); }
+    .tl-dot.orange { border-color:var(--orange-dim); }
+    .tl-date { font-size:8px; letter-spacing:2px; color:var(--dim); margin-bottom:6px; }
+    .tl-org { font-family:'Orbitron',monospace; font-size:12px; font-weight:700; letter-spacing:1px; color:var(--neon); margin-bottom:3px; }
+    .tl-role { font-size:8px; letter-spacing:2px; color:var(--orange); font-family:'Orbitron',monospace; margin-bottom:10px; }
+    .tl-desc { font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.75; color:var(--white); opacity:0.8; font-weight:300; }
 
-    /* ===== CARDS & COMPONENTS ===== */
-    /* summary grid */
-    .sum-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:18px; }
-    .sum-card {
-      background:var(--panel2); border:1px solid var(--border);
-      border-left:3px solid var(--neon-dim); padding:12px 14px;
-    }
-    .sum-card.orange-l { border-left-color:var(--orange-dim); }
-    .sc-label { font-size:7px; letter-spacing:3px; color:var(--text-dim); margin-bottom:5px; }
-    .sc-val { font-family:'Orbitron',monospace; font-size:16px; font-weight:800; color:var(--orange); }
-    .sc-val.g { color:var(--neon); }
-    .sc-val.sm { font-size:12px; }
-
-    .bio-box {
-      background:var(--panel2); border:1px solid var(--border);
-      border-left:3px solid var(--orange-dim);
-      padding:14px 16px; font-size:10px; line-height:1.85; color:var(--white); margin-bottom:14px;
-    }
-    .bio-box p { margin-bottom:8px; }
-    .bio-box p:last-child { margin-bottom:0; }
-
-    .tag-wrap { display:flex; flex-wrap:wrap; gap:5px; margin-top:12px; }
-    .ntag {
-      font-family:'Orbitron',monospace; font-size:8px; letter-spacing:1px;
-      color:var(--neon-dim); border:1px solid var(--border); padding:3px 8px;
-    }
-
-    /* list cards */
-    .card-list { display:flex; flex-direction:column; gap:10px; }
-    .lcard {
-      background:var(--panel2); border:1px solid var(--border);
-      border-left:3px solid var(--neon-dim); padding:14px 16px;
-      transition:border-color 0.15s;
-    }
-    .lcard:hover { border-color:var(--neon-dim); border-left-color:var(--neon); }
-    .lcard.orange { border-left-color:var(--orange-dim); }
-    .lcard-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:6px; }
-    .lcard-name {
-      font-family:'Orbitron',monospace; font-size:11px; font-weight:700;
-      color:var(--neon); letter-spacing:1px;
-    }
-    .lcard-date { font-size:8px; letter-spacing:1px; color:var(--text-dim); white-space:nowrap; }
-    .lcard-role { font-family:'Orbitron',monospace; font-size:8px; letter-spacing:2px; color:var(--orange); margin-bottom:7px; }
-    .lcard-desc { font-size:10px; line-height:1.75; color:var(--white); }
-    .lcard-tags { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
-    .ltag { font-size:8px; color:var(--text-dim); border:1px solid var(--border); padding:2px 6px; font-family:'Orbitron',monospace; }
-
-    .lcard-links { display:flex; gap:7px; margin-top:10px; }
-    .lcard-link {
-      font-family:'Orbitron',monospace; font-size:8px; font-weight:700; letter-spacing:1px;
-      color:var(--neon); text-decoration:none; border:1px solid var(--neon-dim);
-      padding:4px 10px; transition:all 0.12s;
-    }
-    .lcard-link:hover { background:var(--neon); color:#000; box-shadow:0 0 8px var(--neon-glow); }
-
-    /* vol cards */
+    /* ── VOLUNTEERING ── */
+    .vol-grid { display:flex; flex-direction:column; gap:12px; }
     .vol-card {
+      display:grid; grid-template-columns:80px 1fr;
+      gap:20px; align-items:center;
+      background:var(--panel2); border:1px solid var(--border); padding:20px;
+    }
+    .vol-hrs {
+      font-family:'Orbitron',monospace; font-size:20px; font-weight:900;
+      color:var(--orange); text-align:center; line-height:1;
+    }
+    .vol-hrs-label { font-size:7px; letter-spacing:2px; color:var(--dim); text-align:center; margin-top:2px; }
+    .vol-name { font-family:'Orbitron',monospace; font-size:10px; font-weight:700; color:var(--neon); margin-bottom:3px; }
+    .vol-year { font-size:8px; letter-spacing:2px; color:var(--dim); margin-bottom:8px; }
+    .vol-desc { font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.7; color:var(--white); opacity:0.8; font-weight:300; }
+
+    /* ── CERTS ── */
+    .certs-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:32px; }
+    .cert-card {
       background:var(--panel2); border:1px solid var(--border);
-      padding:14px 16px; display:flex; gap:14px; align-items:flex-start;
+      border-left:2px solid var(--neon-dim);
+      padding:16px 18px; display:flex; align-items:center; gap:14px;
     }
-    .vol-badge {
-      font-family:'Orbitron',monospace; font-size:13px; font-weight:800;
-      color:var(--orange); min-width:64px; text-align:center;
-      border:2px solid var(--orange-dim); padding:6px 5px;
-      background:rgba(255,140,0,0.07); line-height:1.3;
-    }
-    .vol-name { font-family:'Orbitron',monospace; font-size:10px; font-weight:700; color:var(--neon); margin-bottom:4px; }
-    .vol-year { font-size:8px; letter-spacing:2px; color:var(--text-dim); margin-bottom:6px; display:block; }
-    .vol-desc { font-size:10px; line-height:1.75; color:var(--white); }
-
-    /* cert rows */
-    .cert-row {
+    .cert-n { font-family:'Orbitron',monospace; font-size:24px; font-weight:900; color:rgba(200,240,0,0.1); }
+    .cert-name { font-family:'Orbitron',monospace; font-size:9px; font-weight:700; letter-spacing:1px; color:var(--neon); margin-bottom:4px; }
+    .cert-tag { font-size:7px; letter-spacing:2px; color:var(--orange); }
+    .edu-card {
       background:var(--panel2); border:1px solid var(--border);
-      padding:12px 16px; display:flex; align-items:center; gap:14px;
+      border-top:2px solid var(--neon-dim); padding:24px;
+      position:relative;
     }
-    .cert-num { font-family:'Orbitron',monospace; font-size:22px; font-weight:900; color:rgba(200,240,0,0.15); min-width:38px; }
-    .cert-name { font-family:'Orbitron',monospace; font-size:10px; font-weight:700; color:var(--neon); flex:1; }
-    .cert-badge { font-size:7px; letter-spacing:1px; color:var(--orange); border:1px solid var(--orange-dim); padding:2px 8px; font-family:'Orbitron',monospace; }
+    .edu-card::before { content:'EDUCATION'; position:absolute; top:-1px; left:20px; font-size:7px; letter-spacing:3px; color:var(--bg); background:var(--neon-dim); padding:1px 8px; font-family:'Orbitron',monospace; }
+    .edu-uni { font-family:'Orbitron',monospace; font-size:14px; font-weight:800; color:var(--neon); margin-bottom:4px; margin-top:8px; }
+    .edu-prog { font-size:9px; letter-spacing:2px; color:var(--orange); font-family:'Orbitron',monospace; margin-bottom:12px; }
+    .edu-desc { font-family:'DM Sans',sans-serif; font-size:13px; line-height:1.75; color:var(--white); opacity:0.8; font-weight:300; }
 
-    /* link rows */
-    .link-row {
-      background:var(--panel2); border:1px solid var(--border);
-      padding:14px 16px; display:flex; align-items:center; gap:14px;
+
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px) {
+      .hero { grid-template-columns:1fr; }
+      .hero-card { display:grid; grid-template-columns:repeat(3,1fr); }
+      .hstat { border-bottom:none; border-right:1px solid var(--border); padding:10px 14px; }
+      .hstat:last-child { border-right:none; }
+      .layout { grid-template-columns:1fr; }
+      .sidenav { position:static; height:auto; border-right:none; border-bottom:1px solid var(--border); padding:16px 0; display:flex; flex-wrap:wrap; gap:4px; padding:12px 16px; }
+      .nav-label { display:none; }
+      .nav-item { padding:8px 12px; border-left:none; border-bottom:2px solid transparent; font-size:7px; }
+      .nav-item.on { border-bottom-color:var(--neon); border-left:none; }
+      .proj-grid { grid-template-columns:1fr; }
+      .proj-card.featured { grid-column:span 1; }
+      .certs-grid { grid-template-columns:1fr; }
+      .content-wrap { padding:24px 20px; }
+      .hero { padding:40px 20px 32px; }
+      .topbar { padding:0 20px; }
     }
-    .lr-num { font-family:'Orbitron',monospace; font-size:26px; font-weight:900; color:rgba(200,240,0,0.12); min-width:48px; }
-    .lr-num.gold { color:rgba(255,200,0,0.45); }
-    .lr-num.silver { color:rgba(180,180,180,0.35); }
-    .lr-info { flex:1; }
-    .lr-name { font-family:'Orbitron',monospace; font-size:11px; font-weight:700; color:var(--neon); margin-bottom:3px; }
-    .lr-desc { font-size:10px; color:var(--white); }
-    .lr-link {
-      font-family:'Orbitron',monospace; font-size:8px; font-weight:700;
-      letter-spacing:1px; color:var(--neon); text-decoration:none;
-      border:1px solid var(--neon-dim); padding:5px 12px; transition:all 0.12s;
-    }
-    .lr-link:hover { background:var(--neon); color:#000; }
-
-    .section-sublabel { font-size:9px; letter-spacing:2px; color:var(--text-dim); margin-bottom:12px; margin-top:18px; }
-    .section-sublabel:first-child { margin-top:0; }
-
-    /* ===== MOBILE RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .topbar {
-        padding: 10px 15px;
-      }
-      .topbar-title {
-        font-size: 8px;
-      }
-      .topbar-sub {
-        font-size: 7px;
-      }
-      .topbar-clock {
-        font-size: 10px;
-      }
-      .topbar-status {
-        font-size: 7px;
-      }
-
-      .main {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 2px solid var(--border);
-        max-height: auto;
-      }
-
-      .sb-menu {
-        flex-direction: row;
-        flex-wrap: wrap;
-        padding: 8px 14px;
-      }
-
-      .sb-menu-label {
-        width: 100%;
-        padding: 4px 0 8px 0;
-      }
-
-      .menu-item {
-        flex: 0 1 auto;
-        padding: 6px 10px;
-        font-size: 8px;
-        margin-right: 8px;
-        margin-bottom: 4px;
-      }
-
-      .sb-socials {
-        padding: 8px 14px;
-      }
-
-      .social-btn {
-        font-size: 6px;
-        padding: 4px 3px;
-      }
-
-      .content {
-        min-height: auto;
-      }
-
-      .content-header {
-        padding: 8px 15px;
-      }
-
-      .content-title {
-        font-size: 11px;
-      }
-
-      .content-id {
-        font-size: 7px;
-      }
-
-      .content-body {
-        padding: 15px;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-
-      .sum-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .sc-val {
-        font-size: 14px;
-      }
-
-      .sc-val.sm {
-        font-size: 11px;
-      }
-
-      .lcard {
-        padding: 12px 14px;
-      }
-
-      .lcard-name {
-        font-size: 10px;
-      }
-
-      .lcard-role {
-        font-size: 7px;
-      }
-
-      .lcard-desc {
-        font-size: 9px;
-      }
-
-      .vol-card {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .vol-badge {
-        font-size: 12px;
-        min-width: auto;
-      }
-
-      .tag-wrap {
-        gap: 4px;
-      }
-
-      .ntag {
-        font-size: 7px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body::after {
-        background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.13) 1px, rgba(0,0,0,0.13) 2px);
-      }
-
-      .topbar-left {
-        gap: 8px;
-        width: 100%;
-      }
-
-      .topbar-title {
-        font-size: 7px;
-        letter-spacing: 2px;
-      }
-
-      .topbar-sub {
-        display: none;
-      }
-
-      .topbar-right {
-        width: 100%;
-        text-align: left;
-        margin-top: 5px;
-      }
-
-      .topbar-shield {
-        width: 24px;
-      }
-
-      .sb-name-block {
-        padding: 8px 12px;
-      }
-
-      .sb-label {
-        font-size: 6px;
-      }
-
-      .sb-name {
-        font-size: 11px;
-      }
-
-      .sb-tagline {
-        font-size: 8px;
-      }
-
-      .sb-stats {
-        padding: 8px 12px;
-      }
-
-      .stat-row {
-        padding: 4px 0;
-        font-size: 8px;
-      }
-
-      .menu-item {
-        padding: 5px 8px;
-        font-size: 7px;
-        margin-right: 6px;
-      }
-
-      .mi-dot {
-        width: 6px;
-        height: 6px;
-      }
-
-      .content-body {
-        padding: 12px;
-      }
-
-      .sum-grid {
-        gap: 8px;
-      }
-
-      .sum-card {
-        padding: 10px 12px;
-      }
-
-      .sc-label {
-        font-size: 6px;
-      }
-
-      .sc-val {
-        font-size: 12px;
-      }
-
-      .bio-box {
-        padding: 12px 14px;
-        font-size: 9px;
-      }
-
-      .lcard {
-        padding: 11px 13px;
-      }
-
-      .lcard-top {
-        flex-direction: column;
-        gap: 5px;
-      }
-
-      .lcard-name {
-        font-size: 9px;
-      }
-
-      .lcard-desc {
-        font-size: 8px;
-        line-height: 1.6;
-      }
-
-      .lcard-links {
-        gap: 5px;
-      }
-
-      .lcard-link {
-        font-size: 7px;
-        padding: 3px 8px;
-      }
-
-      .cert-row {
-        padding: 10px 12px;
-        gap: 10px;
-      }
-
-      .cert-num {
-        font-size: 18px;
-        min-width: 30px;
-      }
-
-      .cert-name {
-        font-size: 9px;
-      }
-
-      .cert-badge {
-        font-size: 6px;
-      }
-
-      .link-row {
-        padding: 12px 14px;
-        gap: 10px;
-      }
-
-      .lr-num {
-        font-size: 22px;
-        min-width: 40px;
-      }
-
-      .lr-name {
-        font-size: 10px;
-      }
-
-      .lr-desc {
-        font-size: 9px;
-      }
-
-      .lr-link {
-        font-size: 7px;
-        padding: 4px 10px;
-      }
+    @media(max-width:560px) {
+      .hero-card { grid-template-columns:1fr 1fr; }
+      .hero-name { font-size:28px; }
+      .vol-card { grid-template-columns:60px 1fr; gap:14px; }
+      .bottombar { padding:10px 16px; }
     }
   </style>
 </head>
@@ -593,585 +361,428 @@
 
 <!-- LOADING -->
 <div id="loading">
-  <svg class="load-shield" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M50 5 L92 22 L92 65 Q92 95 50 115 Q8 95 8 65 L8 22 Z" fill="#0a1408" stroke="#c8f000" stroke-width="2"/>
-    <path d="M50 15 L82 29 L82 63 Q82 88 50 105 Q18 88 18 63 L18 29 Z" fill="none" stroke="#4a6020" stroke-width="1"/>
-    <line x1="30" y1="48" x2="70" y2="48" stroke="#c8f000" stroke-width="1.5"/>
-    <line x1="30" y1="56" x2="70" y2="56" stroke="#8aaa00" stroke-width="1"/>
-    <line x1="30" y1="64" x2="70" y2="64" stroke="#c8f000" stroke-width="1.5"/>
-    <line x1="30" y1="72" x2="70" y2="72" stroke="#8aaa00" stroke-width="1"/>
-    <circle cx="50" cy="35" r="11" fill="none" stroke="#c8f000" stroke-width="1.5"/>
-    <text x="50" y="39" text-anchor="middle" font-size="10" fill="#c8f000" font-family="monospace" font-weight="bold">RPD</text>
+  <svg class="load-logo" viewBox="0 0 80 80" fill="none">
+    <rect x="2" y="2" width="76" height="76" stroke="#c8f000" stroke-width="1.5" opacity="0.3"/>
+    <rect x="8" y="8" width="64" height="64" stroke="#c8f000" stroke-width="1" opacity="0.15"/>
+    <path d="M40 16 L64 28 L64 52 Q64 68 40 72 Q16 68 16 52 L16 28 Z" fill="rgba(200,240,0,0.06)" stroke="#c8f000" stroke-width="1.5"/>
+    <text x="40" y="44" text-anchor="middle" font-size="11" fill="#c8f000" font-family="monospace" font-weight="bold" letter-spacing="1">RHG</text>
+    <line x1="28" y1="50" x2="52" y2="50" stroke="#c8f000" stroke-width="1" opacity="0.5"/>
   </svg>
-  <div class="load-dept">DEVELOPER PROFILE</div>
-  <div class="load-sub">PROFESSIONAL PORTFOLIO</div>
+  <div class="load-name">RAYYAN HASAN GORAYA</div>
+  <div class="load-sub">LOADING PORTFOLIO</div>
   <div class="load-bar-wrap"><div class="load-bar" id="lbar"></div></div>
   <div class="load-msg" id="lmsg">INITIALIZING...</div>
 </div>
 
 <!-- APP -->
 <div id="app">
+
   <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-left">
-      <svg class="topbar-shield" viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M50 5 L92 22 L92 65 Q92 95 50 115 Q8 95 8 65 L8 22 Z" fill="#0a1408" stroke="#c8f000" stroke-width="2.5"/>
-        <circle cx="50" cy="62" r="22" fill="none" stroke="#4a6020" stroke-width="1"/>
-        <text x="50" y="67" text-anchor="middle" font-size="11" fill="#c8f000" font-family="monospace" font-weight="bold">RPD</text>
-      </svg>
-      <div class="topbar-title-wrap">
-        <div class="topbar-title">DEVELOPER PROFILE — PROFESSIONAL PORTFOLIO</div>
-        <div class="topbar-sub">PORTFOLIO FILE: RHG-2026 &nbsp;·&nbsp; CLASSIFICATION: PUBLIC &nbsp;·&nbsp; OPERATOR: RAYYAN</div>
+      <div class="tb-badge">
+        <svg viewBox="0 0 80 80" fill="none"><path d="M40 8 L66 20 L66 46 Q66 62 40 72 Q14 62 14 46 L14 20 Z" fill="rgba(200,240,0,0.08)" stroke="#c8f000" stroke-width="1.5"/><text x="40" y="45" text-anchor="middle" font-size="10" fill="#c8f000" font-family="monospace" font-weight="bold">RG</text></svg>
       </div>
+      <span class="tb-name">RAYYAN HASAN GORAYA</span>
+      <div class="tb-sep"></div>
+      <span class="tb-file">FILE: RHG-2026</span>
     </div>
     <div class="topbar-right">
-      <div class="topbar-clock" id="clock"></div>
-      <div class="topbar-status">STATUS: ACTIVE SURVEILLANCE</div>
+      <div class="tb-clock" id="clock">--:--:--</div>
+      <div class="tb-dot"></div>
+      <div class="tb-status">OPEN TO WORK</div>
     </div>
   </div>
 
-  <!-- MAIN -->
-  <div class="main">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sb-name-block">
-        <div class="sb-label">DEVELOPER</div>
-        <div class="sb-name">GORAYA, RAYYAN H.</div>
-        <div class="sb-tagline">Math @ UWaterloo · Game Dev · Software Dev</div>
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">DEVELOPER PROFILE · OAKVILLE, ON</div>
+      <div class="hero-name">RAYYAN HASAN<br/><span>GORAYA</span></div>
+      <div class="hero-role">MATH @ UWATERLOO · GAME DEV · SOFTWARE DEV</div>
+      <div class="hero-desc">
+        Honours Mathematics student at the University of Waterloo, specializing in Computational Mathematics.
+        Building at the intersection of math, code, and design — from 12km open-world Unity games
+        to full-stack AI platforms. Moving fast and shipping things that actually work.
       </div>
-
-      <div class="sb-stats">
-        <div class="stat-row">
-          <span class="stat-k">SCHOLARSHIP</span>
-          <span class="stat-v">$2,000 CAD</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">UNIVERSITY</span>
-          <span class="stat-v g">UWATERLOO</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">PROGRAM</span>
-          <span class="stat-v">COMP MATH</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">PROJECTS</span>
-          <span class="stat-v">7+</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">VOL HOURS</span>
-          <span class="stat-v g">200+</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">HACKATHONS</span>
-          <span class="stat-v">3</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">CERTS</span>
-          <span class="stat-v">4</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-k">STATUS</span>
-          <span class="stat-v" style="color:#ff4400;">OPEN TO HIRE</span>
-        </div>
+      <div class="hero-tags">
+        <span class="htag">JavaScript</span><span class="htag">Python</span><span class="htag">C#</span>
+        <span class="htag">Unity HDRP</span><span class="htag">Firebase</span><span class="htag">Blender</span>
+        <span class="htag">AI / ML</span><span class="htag">NumPy</span><span class="htag">SQL</span>
       </div>
-
-      <div class="sb-menu">
-        <div class="sb-menu-label">NAVIGATE:</div>
-        <div class="menu-item on" onclick="show('summary',this)"><div class="mi-dot filled"></div> SUMMARY</div>
-        <div class="menu-item" onclick="show('projects',this)"><div class="mi-dot"></div> PROJECTS</div>
-        <div class="menu-item" onclick="show('experience',this)"><div class="mi-dot"></div> EXPERIENCE</div>
-        <div class="menu-item" onclick="show('volunteering',this)"><div class="mi-dot"></div> VOLUNTEERING</div>
-        <div class="menu-item" onclick="show('links',this)"><div class="mi-dot"></div> LINKS</div>
-        <div class="menu-item" onclick="show('certifications',this)"><div class="mi-dot"></div> CERTIFICATIONS</div>
-      </div>
-
-      <div class="sb-socials">
-        <a class="social-btn" href="https://www.linkedin.com/in/rayyanhasangoraya" target="_blank">LINKEDIN</a>
-        <a class="social-btn" href="https://github.com/rayhasgor07" target="_blank">GITHUB</a>
-        <a class="social-btn" href="https://www.instagram.com/rayhasgor07/" target="_blank">INSTA</a>
+      <div class="hero-socials">
+        <!-- LinkedIn -->
+        <a class="social-icon-btn" href="https://www.linkedin.com/in/rayyanhasangoraya" target="_blank" title="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="3"/>
+            <line x1="7" y1="10" x2="7" y2="17"/>
+            <line x1="7" y1="7" x2="7" y2="7.5" stroke-linecap="round" stroke-width="2.5"/>
+            <path d="M11 10 v7 M11 13 a3 3 0 0 1 6 0 v4"/>
+          </svg>
+        </a>
+        <!-- GitHub -->
+        <a class="social-icon-btn" href="https://github.com/rayhasgor07" target="_blank" title="GitHub">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </a>
+        <!-- Instagram -->
+        <a class="social-icon-btn" href="https://www.instagram.com/rayhasgor07/" target="_blank" title="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
       </div>
     </div>
+    <div class="hero-card">
+      <div class="hstat"><div class="hstat-k">UNIVERSITY</div><div class="hstat-v g">UWATERLOO</div></div>
+      <div class="hstat"><div class="hstat-k">SCHOLARSHIP</div><div class="hstat-v">$2,000 CAD</div></div>
+      <div class="hstat"><div class="hstat-k">PROJECTS</div><div class="hstat-v g">7+</div></div>
+      <div class="hstat"><div class="hstat-k">VOL HOURS</div><div class="hstat-v g">200+</div></div>
+      <div class="hstat"><div class="hstat-k">STATUS</div><div class="hstat-v r">OPEN TO WORK</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDE NAV -->
+    <nav class="sidenav">
+      <div class="nav-label">SECTIONS</div>
+      <div class="nav-item on" onclick="show('projects',this)"><span class="ni-num">01</span> PROJECTS <div class="ni-dot"></div></div>
+      <div class="nav-item" onclick="show('experience',this)"><span class="ni-num">02</span> EXPERIENCE <div class="ni-dot"></div></div>
+      <div class="nav-item" onclick="show('volunteering',this)"><span class="ni-num">03</span> VOLUNTEERING <div class="ni-dot"></div></div>
+      <div class="nav-item" onclick="show('certifications',this)"><span class="ni-num">04</span> CERTIFICATIONS <div class="ni-dot"></div></div>
+      <div class="nav-item" onclick="show('education',this)"><span class="ni-num">05</span> EDUCATION <div class="ni-dot"></div></div>
+    </nav>
 
     <!-- CONTENT -->
-    <div class="content">
-      <div class="content-header">
-        <div class="content-title" id="ctitle">SUMMARY</div>
-        <div class="content-id">PROFILE ID: RHG-2026 &nbsp;·&nbsp; <span class="cursor-blink">█</span></div>
+    <div class="content-wrap">
+
+      <!-- PROJECTS -->
+      <div class="section on" id="sec-projects">
+        <div class="sec-header">
+          <div><div class="sec-title">PROJECTS</div><div class="sec-sub">BUILT · SHIPPED · LIVE</div></div>
+          <div class="sec-count">06</div>
+        </div>
+        <div class="proj-grid">
+
+          <div class="proj-card featured">
+            <div class="proj-badge wip">IN DEVELOPMENT</div>
+            <div class="proj-name">OPEN WORLD DRIVING GAME</div>
+            <div class="proj-stack">Unity HDRP · C# · Blender</div>
+            <div class="proj-desc">12km × 12km open-world island built from scratch. Custom vehicle physics, realistic car sounds, speedometer, minimap, and a full road network. All 3D models made in Blender. Migrated to HDRP for real water and high-fidelity visuals. A lot more coming.</div>
+            <div class="proj-links"><a href="https://rayhasgor07.github.io/90-s-Car-game/" target="_blank" class="proj-link">▶ EARLY DEMO</a></div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-badge live">LIVE</div>
+            <div class="proj-name">MIDNIGHT TUNERS</div>
+            <div class="proj-stack">JavaScript · Firebase · Python · Groq AI</div>
+            <div class="proj-desc">Full-stack automotive platform — AI tuning assistant, community feed, car marketplace, market value estimators, engine sound library, and performance mod guides.</div>
+            <div class="proj-links"><a href="https://midnight-tuners.web.app/" target="_blank" class="proj-link">🚀 LAUNCH</a></div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-badge live">LIVE</div>
+            <div class="proj-name">SAJDAH</div>
+            <div class="proj-stack">JavaScript · Node.js · Firebase</div>
+            <div class="proj-desc">Islamic companion web app — Quran reader, Duas library, Salah guide, Qibla compass, Masjid Finder via Google Maps API, prayer timings, and AI assistant.</div>
+            <div class="proj-links"><a href="https://sajdah2.web.app/" target="_blank" class="proj-link">🚀 LIVE</a></div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-badge live">LIVE</div>
+            <div class="proj-name">GTA DUBAI</div>
+            <div class="proj-stack">JavaScript · p5.js · p5.play</div>
+            <div class="proj-desc">2D open-world driving game set in Dubai — 20+ vehicles with unique engine sounds, gear shifts, fuel system, garages, minimap, and hand-built road network.</div>
+            <div class="proj-links"><a href="https://rayhasgor07.github.io/GTA-1-DUBAI/" target="_blank" class="proj-link">🚀 PLAY</a></div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-badge grade">100% — GR.11 CS</div>
+            <div class="proj-name">OCEAN GRABBER</div>
+            <div class="proj-stack">Python · Pygame</div>
+            <div class="proj-desc">2D arcade game — collect ocean plastic while dodging obstacles. Collision detection, score tracking, increasing difficulty. Scored 100% in Grade 11 CS.</div>
+            <div class="proj-links">
+              <a href="https://github.com/rayhasgor07/Ocean-Grabber" target="_blank" class="proj-link">GITHUB</a>
+              <a href="https://www.youtube.com/shorts/AUJsslGQf4c" target="_blank" class="proj-link">▶ DEMO</a>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-badge live">TOP 6% — HACKATHON</div>
+            <div class="proj-name">PROBLEMS AROUND THE WORLD</div>
+            <div class="proj-stack">JavaScript · p5.js</div>
+            <div class="proj-desc">7-level educational game covering global issues. Top 6% — 30 finalists out of 500+ at the BYJU Silicon Valley Hackathon.</div>
+            <div class="proj-links"><a href="https://rayhasgor07.github.io/Problems-Around-The-World/" target="_blank" class="proj-link">🚀 PLAY</a></div>
+          </div>
+
+        </div>
       </div>
 
-      <div class="content-body">
-
-        <!-- SUMMARY -->
-        <div class="section on" id="sec-summary">
-          <div class="sum-grid">
-            <div class="sum-card">
-              <div class="sc-label">FULL NAME</div>
-              <div class="sc-val sm">RAYYAN HASAN GORAYA</div>
-            </div>
-            <div class="sum-card orange-l">
-              <div class="sc-label">SCHOLARSHIP</div>
-              <div class="sc-val">$2,000</div>
-            </div>
-            <div class="sum-card">
-              <div class="sc-label">LOCATION</div>
-              <div class="sc-val sm g">OAKVILLE, ON</div>
-            </div>
-            <div class="sum-card orange-l">
-              <div class="sc-label">INTERNSHIP</div>
-              <div class="sc-val sm" style="color:#ff4400;">FALL 2026 OPEN</div>
-            </div>
-            <div class="sum-card">
-              <div class="sc-label">PROJECTS BUILT</div>
-              <div class="sc-val">7+</div>
-            </div>
-            <div class="sum-card">
-              <div class="sc-label">VOLUNTEER HOURS</div>
-              <div class="sc-val g">200+</div>
+      <!-- EXPERIENCE -->
+      <div class="section" id="sec-experience">
+        <div class="sec-header">
+          <div><div class="sec-title">EXPERIENCE</div><div class="sec-sub">ROLES · EVENTS · ACHIEVEMENTS</div></div>
+          <div class="sec-count">05</div>
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-dot active"></div>
+            <div class="tl-body">
+              <div class="tl-date">2025 – PRESENT</div>
+              <div class="tl-org">UNIVERSITY OF WATERLOO</div>
+              <div class="tl-role">MEMBER — CS CLUB & DATA SCIENCE CLUB</div>
+              <div class="tl-desc">Actively engaged in networking events and technical discussions with industry professionals and fellow students. Expanding connections in the tech ecosystem at Waterloo.</div>
             </div>
           </div>
-
-          <div class="bio-box">
-            <p>Honours Mathematics student at the University of Waterloo (2025–2030), specializing in Computational Mathematics. Admitted with a $2,000 entrance scholarship. Active in the UWaterloo Data Science Club and CS Club.</p>
-            <p>Building at the intersection of math, code, and design. Currently deep in a 12km × 12km open-world driving game in Unity HDRP — custom vehicle physics, real water, high-fidelity visuals, all modelled from scratch in Blender.</p>
-            <p>Also ships full-stack web apps, AI-integrated tools, and educational games. Early in the journey but moving fast and building things that actually work.</p>
-            <div class="tag-wrap">
-              <span class="ntag">JavaScript</span><span class="ntag">Python</span><span class="ntag">C#</span>
-              <span class="ntag">HTML/CSS</span><span class="ntag">Firebase</span><span class="ntag">Unity HDRP</span>
-              <span class="ntag">Blender</span><span class="ntag">AI/ML</span><span class="ntag">NumPy</span>
-              <span class="ntag">Pandas</span><span class="ntag">SQL</span>
+          <div class="tl-item">
+            <div class="tl-dot orange"></div>
+            <div class="tl-body">
+              <div class="tl-date">SEPTEMBER 2025</div>
+              <div class="tl-org">HACK THE NORTH '25</div>
+              <div class="tl-role">VOLUNTEER</div>
+              <div class="tl-desc">Managed event logistics and security across 7 floors for 1,000+ participants at Canada's largest hackathon. High-pressure, high-impact environment.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <div class="tl-date">2020 – 2025</div>
+              <div class="tl-org">540 GOLDEN HAWKS AIR CADETS</div>
+              <div class="tl-role">FLIGHT SERGEANT</div>
+              <div class="tl-desc">5 years of structured training in aviation, leadership, and command. Mentored junior cadets in aircraft systems, drill, and outdoor survival. Rose through the ranks to Flight Sergeant.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot orange"></div>
+            <div class="tl-body">
+              <div class="tl-date">JUL – AUG 2024</div>
+              <div class="tl-org">ICNA RELIEF CANADA — YLDP</div>
+              <div class="tl-role">YOUTH LEADERSHIP PROGRAM</div>
+              <div class="tl-desc">Led a 6-person team to raise $15,000 CAD through coordinated event logistics, outreach, and teamwork directed toward humanitarian relief.</div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-body">
+              <div class="tl-date">MAY 2024</div>
+              <div class="tl-org">HAWKHACKS '24 — WILFRID LAURIER</div>
+              <div class="tl-role">HACKATHON PARTICIPANT</div>
+              <div class="tl-desc">Competed in a 36-hour national hackathon while still in Grade 11 — one of the youngest participants among 700+ university students.</div>
             </div>
           </div>
         </div>
-
-        <!-- PROJECTS -->
-        <div class="section" id="sec-projects">
-          <div class="card-list">
-
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">OPEN WORLD DRIVING GAME</div>
-                <div class="lcard-date" style="color:var(--orange);">IN DEVELOPMENT</div>
-              </div>
-              <div class="lcard-role">Unity HDRP · C# · Blender</div>
-              <div class="lcard-desc">12km × 12km open-world island built from scratch. Custom vehicle physics, realistic car sounds, speedometer, minimap, and a full road network. All 3D models made in Blender. Migrated to HDRP for real water and high-fidelity visuals. A lot more coming.</div>
-              <div class="lcard-links">
-                <a href="https://rayhasgor07.github.io/90-s-Car-game/" target="_blank" class="lcard-link">▶ EARLY DEMO</a>
-              </div>
-            </div>
-
-            <div class="lcard orange">
-              <div class="lcard-top">
-                <div class="lcard-name">MIDNIGHT TUNERS</div>
-                <div class="lcard-date" style="color:var(--neon);">LIVE</div>
-              </div>
-              <div class="lcard-role">JavaScript · Firebase · Python · Groq AI</div>
-              <div class="lcard-desc">Full-stack automotive platform — AI tuning assistant powered by Groq, community feed, car marketplace, Python-built market value estimators, engine sound library, and performance mod guides.</div>
-              <div class="lcard-links">
-                <a href="https://midnight-tuners.web.app/" target="_blank" class="lcard-link">🚀 LAUNCH</a>
-              </div>
-            </div>
-
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">SAJDAH</div>
-                <div class="lcard-date" style="color:var(--neon);">LIVE</div>
-              </div>
-              <div class="lcard-role">JavaScript · Node.js · HTML/CSS · Firebase</div>
-              <div class="lcard-desc">Comprehensive Islamic companion web app — Quran reader, Duas library, Salah guide, Qibla compass, Masjid Finder via Google Maps API, prayer timings, and an AI assistant. Live and continuously improving.</div>
-              <div class="lcard-links">
-                <a href="https://sajdah2.web.app/" target="_blank" class="lcard-link">🚀 LIVE</a>
-              </div>
-            </div>
-
-            <div class="lcard orange">
-              <div class="lcard-top">
-                <div class="lcard-name">GTA DUBAI</div>
-                <div class="lcard-date" style="color:var(--neon);">LIVE</div>
-              </div>
-              <div class="lcard-role">JavaScript · p5.js · p5.play</div>
-              <div class="lcard-desc">2D open-world driving game set in Dubai — 20+ driveable vehicles with unique engine sounds, gear shifts, fuel system, garages, minimap, and a hand-built road network. Built entirely in JavaScript with p5.js.</div>
-              <div class="lcard-links">
-                <a href="https://rayhasgor07.github.io/GTA-1-DUBAI/" target="_blank" class="lcard-link">🚀 PLAY</a>
-              </div>
-            </div>
-
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">OCEAN GRABBER</div>
-                <div class="lcard-date">100% — GR.11 CS</div>
-              </div>
-              <div class="lcard-role">Python · Pygame</div>
-              <div class="lcard-desc">2D arcade game — collect ocean plastic while dodging obstacles. Collision detection, score tracking, increasing difficulty. Scored 100% in Grade 11 Computer Science.</div>
-              <div class="lcard-links">
-                <a href="https://github.com/rayhasgor07/Ocean-Grabber" target="_blank" class="lcard-link">GITHUB</a>
-                <a href="https://www.youtube.com/shorts/AUJsslGQf4c" target="_blank" class="lcard-link">▶ DEMO</a>
-              </div>
-            </div>
-
-            <div class="lcard orange">
-              <div class="lcard-top">
-                <div class="lcard-name">PROBLEMS AROUND THE WORLD</div>
-                <div class="lcard-date" style="color:var(--neon);">TOP 6%</div>
-              </div>
-              <div class="lcard-role">JavaScript · p5.js · HTML</div>
-              <div class="lcard-desc">7-level educational game covering ocean pollution, climate change, wildfires, overpopulation, and COVID-19. Top 6% — 30 finalists out of 500+ at the BYJU Silicon Valley Hackathon.</div>
-              <div class="lcard-links">
-                <a href="https://rayhasgor07.github.io/Problems-Around-The-World/" target="_blank" class="lcard-link">🚀 PLAY</a>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- EXPERIENCE -->
-        <div class="section" id="sec-experience">
-          <div class="card-list">
-
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">UNIVERSITY OF WATERLOO — CS & DS CLUB</div>
-                <div class="lcard-date">2025 – PRESENT</div>
-              </div>
-              <div class="lcard-role">MEMBER</div>
-              <div class="lcard-desc">Actively engaged in networking events and technical discussions with industry professionals and fellow students. Expanding connections in the tech ecosystem at Waterloo.</div>
-            </div>
-
-            <div class="lcard orange">
-              <div class="lcard-top">
-                <div class="lcard-name">HACK THE NORTH '25</div>
-                <div class="lcard-date">SEPT 2025</div>
-              </div>
-              <div class="lcard-role">VOLUNTEER</div>
-              <div class="lcard-desc">Managed event logistics and security across 7 floors for 1,000+ participants at Canada's largest hackathon. High-pressure, high-impact environment.</div>
-            </div>
-
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">540 GOLDEN HAWKS AIR CADETS</div>
-                <div class="lcard-date">2020 – 2025</div>
-              </div>
-              <div class="lcard-role">FLIGHT SERGEANT</div>
-              <div class="lcard-desc">5 years of structured training in aviation, leadership, and command. Mentored junior cadets in aircraft systems, drill, and outdoor survival. Rose through the ranks to Flight Sergeant.</div>
-            </div>
-
-            <div class="lcard orange">
-              <div class="lcard-top">
-                <div class="lcard-name">ICNA RELIEF CANADA — YLDP</div>
-                <div class="lcard-date">JUL – AUG 2024</div>
-              </div>
-              <div class="lcard-role">YOUTH LEADERSHIP PROGRAM</div>
-              <div class="lcard-desc">Led a 6-person team to raise $15,000 CAD through coordinated event logistics, outreach, and teamwork directed toward humanitarian relief.</div>
-            </div>
-
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">HAWKHACKS '24 — WILFRID LAURIER</div>
-                <div class="lcard-date">MAY 2024</div>
-              </div>
-              <div class="lcard-role">HACKATHON PARTICIPANT</div>
-              <div class="lcard-desc">Competed in a 36-hour national hackathon while still in Grade 11 — one of the youngest participants among 700+ university students.</div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- VOLUNTEERING -->
-        <div class="section" id="sec-volunteering">
-          <div class="card-list">
-
-            <div class="vol-card">
-              <div class="vol-badge">150+<br/>HRS</div>
-              <div>
-                <div class="vol-name">RAMADAN AT AL FALAH MOSQUE</div>
-                <span class="vol-year">2023 & 2024</span>
-                <div class="vol-desc">Distributed iftar, coordinated crowd flow, and assisted with on-site logistics supporting hundreds of community members each evening during Ramadan.</div>
-              </div>
-            </div>
-
-            <div class="vol-card">
-              <div class="vol-badge">20<br/>HRS</div>
-              <div>
-                <div class="vol-name">ICNA FEST AT AL FALAH</div>
-                <span class="vol-year">2023 & 2024</span>
-                <div class="vol-desc">Assembled infrastructure, supervised activities, and handled event logistics for a large-scale community festival.</div>
-              </div>
-            </div>
-
-            <div class="vol-card">
-              <div class="vol-badge">10<br/>HRS</div>
-              <div>
-                <div class="vol-name">POPPY SELLING — AIR CADETS</div>
-                <span class="vol-year">NOVEMBER 2023</span>
-                <div class="vol-desc">Raised $200–300 CAD for veterans on Remembrance Day by engaging with the public outside local retail stores.</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- LINKS -->
-        <div class="section" id="sec-links">
-          <div class="card-list">
-            <div class="link-row">
-              <div class="lr-num gold">01</div>
-              <div class="lr-info">
-                <div class="lr-name">LINKEDIN</div>
-                <div class="lr-desc">Full professional history, skills, and endorsements.</div>
-              </div>
-              <a href="https://www.linkedin.com/in/rayyanhasangoraya" target="_blank" class="lr-link">OPEN</a>
-            </div>
-            <div class="link-row">
-              <div class="lr-num gold">02</div>
-              <div class="lr-info">
-                <div class="lr-name">GITHUB</div>
-                <div class="lr-desc">All active and archived project source code.</div>
-              </div>
-              <a href="https://github.com/rayhasgor07" target="_blank" class="lr-link">OPEN</a>
-            </div>
-            <div class="link-row">
-              <div class="lr-num silver">03</div>
-              <div class="lr-info">
-                <div class="lr-name">MIDNIGHT TUNERS</div>
-                <div class="lr-desc">Full-stack automotive AI platform. Currently live.</div>
-              </div>
-              <a href="https://midnight-tuners.web.app/" target="_blank" class="lr-link">LAUNCH</a>
-            </div>
-            <div class="link-row">
-              <div class="lr-num silver">04</div>
-              <div class="lr-info">
-                <div class="lr-name">GTA DUBAI</div>
-                <div class="lr-desc">2D open-world street racing game. Playable in browser.</div>
-              </div>
-              <a href="https://rayhasgor07.github.io/GTA-1-DUBAI/" target="_blank" class="lr-link">PLAY</a>
-            </div>
-            <div class="link-row">
-              <div class="lr-num">05</div>
-              <div class="lr-info">
-                <div class="lr-name">INSTAGRAM</div>
-                <div class="lr-desc">Personal feed and updates.</div>
-              </div>
-              <a href="https://www.instagram.com/rayhasgor07/" target="_blank" class="lr-link">OPEN</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- CERTIFICATIONS -->
-        <div class="section" id="sec-certifications">
-          <div class="section-sublabel">CERTIFICATIONS</div>
-          <div class="card-list" style="gap:8px;">
-            <div class="cert-row"><div class="cert-num">01</div><div class="cert-name">UNITY CERTIFIED ASSOCIATE</div><div class="cert-badge">GAME DEV</div></div>
-            <div class="cert-row"><div class="cert-num">02</div><div class="cert-name">GOOGLE ADVANCED DATA ANALYTICS</div><div class="cert-badge">DATA</div></div>
-            <div class="cert-row"><div class="cert-num">03</div><div class="cert-name">GOOGLE AI ESSENTIALS</div><div class="cert-badge">AI/ML</div></div>
-            <div class="cert-row"><div class="cert-num">04</div><div class="cert-name">MICROSOFT CYBERSECURITY</div><div class="cert-badge">SECURITY</div></div>
-          </div>
-
-          <div class="section-sublabel">EDUCATION</div>
-          <div class="card-list" style="gap:8px;">
-            <div class="lcard">
-              <div class="lcard-top">
-                <div class="lcard-name">UNIVERSITY OF WATERLOO</div>
-                <div class="lcard-date">2025 – 2030</div>
-              </div>
-              <div class="lcard-role">BACHELOR OF MATHEMATICS — COMPUTATIONAL MATHEMATICS</div>
-              <div class="lcard-desc">Admitted with a $2,000 entrance scholarship. Focused on software development, game dev, AI and ML. Active in Data Science and CS Club.</div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- content-body -->
-
-      <div class="bottombar">
-        <div class="bb-btns">
-          <div class="bb-btn" onclick="cycle(-1)"><span class="k">↑</span> PREV</div>
-          <div class="bb-btn" onclick="cycle(1)"><span class="k">↓</span> NEXT</div>
-          <div class="bb-btn" onclick="window.open('https://www.linkedin.com/in/rayyanhasangoraya','_blank')"><span class="k">↵</span> CONTACT</div>
-          <div class="bb-btn sound-toggle"><span class="k">♪</span> SOUND</div>
-        </div>
-        <div class="bb-info">OPEN TO FALL 2026 INTERNSHIPS</div>
       </div>
-    </div><!-- content -->
-  </div><!-- main -->
+
+      <!-- VOLUNTEERING -->
+      <div class="section" id="sec-volunteering">
+        <div class="sec-header">
+          <div><div class="sec-title">VOLUNTEERING</div><div class="sec-sub">200+ HOURS TOTAL</div></div>
+          <div class="sec-count">03</div>
+        </div>
+        <div class="vol-grid">
+          <div class="vol-card">
+            <div><div class="vol-hrs">150+</div><div class="vol-hrs-label">HOURS</div></div>
+            <div>
+              <div class="vol-name">RAMADAN AT AL FALAH MOSQUE</div>
+              <div class="vol-year">2023 & 2024</div>
+              <div class="vol-desc">Distributed iftar, coordinated crowd flow, and assisted with on-site logistics supporting hundreds of community members each evening during Ramadan.</div>
+            </div>
+          </div>
+          <div class="vol-card">
+            <div><div class="vol-hrs">20</div><div class="vol-hrs-label">HOURS</div></div>
+            <div>
+              <div class="vol-name">ICNA FEST AT AL FALAH</div>
+              <div class="vol-year">2023 & 2024</div>
+              <div class="vol-desc">Assembled infrastructure, supervised activities, and handled event logistics for a large-scale community festival.</div>
+            </div>
+          </div>
+          <div class="vol-card">
+            <div><div class="vol-hrs">10</div><div class="vol-hrs-label">HOURS</div></div>
+            <div>
+              <div class="vol-name">POPPY SELLING — AIR CADETS</div>
+              <div class="vol-year">NOVEMBER 2023</div>
+              <div class="vol-desc">Raised $200–300 CAD for veterans on Remembrance Day by engaging with the public outside local retail stores.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CERTIFICATIONS -->
+      <div class="section" id="sec-certifications">
+        <div class="sec-header">
+          <div><div class="sec-title">CERTIFICATIONS</div><div class="sec-sub">VERIFIED CREDENTIALS</div></div>
+          <div class="sec-count">04</div>
+        </div>
+        <div class="certs-grid">
+          <div class="cert-card"><div class="cert-n">01</div><div><div class="cert-name">UNITY CERTIFIED ASSOCIATE</div><div class="cert-tag">GAME DEV</div></div></div>
+          <div class="cert-card"><div class="cert-n">02</div><div><div class="cert-name">GOOGLE ADVANCED DATA ANALYTICS</div><div class="cert-tag">DATA SCIENCE</div></div></div>
+          <div class="cert-card"><div class="cert-n">03</div><div><div class="cert-name">GOOGLE AI ESSENTIALS</div><div class="cert-tag">AI / ML</div></div></div>
+          <div class="cert-card"><div class="cert-n">04</div><div><div class="cert-name">MICROSOFT CYBERSECURITY</div><div class="cert-tag">SECURITY</div></div></div>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <div class="section" id="sec-education">
+        <div class="sec-header">
+          <div><div class="sec-title">EDUCATION</div><div class="sec-sub">ACADEMIC BACKGROUND</div></div>
+          <div class="sec-count">01</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-uni">UNIVERSITY OF WATERLOO</div>
+          <div class="edu-prog">BACHELOR OF MATHEMATICS — COMPUTATIONAL MATHEMATICS · 2025–2030</div>
+          <div class="edu-desc">Admitted with a $2,000 entrance scholarship. Focused on software development, game dev, AI and ML. Active in the Data Science Club and CS Club.</div>
+        </div>
+      </div>
+
+    </div><!-- content-wrap -->
+  </div><!-- layout -->
+
+
+
 </div><!-- app -->
 
 <script>
-  // SOUND SYSTEM - NFS Most Wanted inspired
-  let soundEnabled = true;
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  
-  // Menu click - deep punch with metallic resonance
-  function playMenuClick() {
-    if (!soundEnabled) return;
-    const now = audioCtx.currentTime;
-    
-    // Deep bass hit
-    const bass = audioCtx.createOscillator();
-    const bassGain = audioCtx.createGain();
-    bass.connect(bassGain);
-    bassGain.connect(audioCtx.destination);
-    bass.type = 'sine';
-    bass.frequency.setValueAtTime(220, now);
-    bass.frequency.exponentialRampToValueAtTime(80, now + 0.08);
-    bassGain.gain.setValueAtTime(0.4, now);
-    bassGain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
-    bass.start(now);
-    bass.stop(now + 0.08);
-    
-    // Metallic high-freq click
-    const click = audioCtx.createOscillator();
-    const clickGain = audioCtx.createGain();
-    click.connect(clickGain);
-    clickGain.connect(audioCtx.destination);
-    click.type = 'triangle';
-    click.frequency.setValueAtTime(800, now);
-    click.frequency.exponentialRampToValueAtTime(400, now + 0.05);
-    clickGain.gain.setValueAtTime(0.25, now);
-    clickGain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
-    click.start(now);
-    click.stop(now + 0.05);
-  }
+/* ================================================================
+   SOUND SLOTS — drop your audio files in here
+   Replace the src strings with your actual sound file paths.
+   All sounds are optional — missing files fail silently.
+   ================================================================ */
+const SOUNDS = {
+  boot:    null,   // plays on loading complete / app reveal
+  select:  null,   // plays on nav item click
+  nav:     null,   // plays on arrow key / prev-next
+  hover:   null,   // plays on button/nav hover
+  confirm: null,   // plays on contact button click
+  ambient: null,   // loops in the background — add your file here
+};
 
-  // Navigation sound - sci-fi sweep
-  function playNav() {
-    if (!soundEnabled) return;
-    const now = audioCtx.currentTime;
-    
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, now);
-    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.12);
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-    osc.start(now);
-    osc.stop(now + 0.12);
-  }
+/* ── HOW TO ADD SOUNDS ─────────────────────────────────────────
+   Replace any null with: loadSound('./path/to/your-file.mp3')
+   Example:
+     boot:    loadSound('./sounds/boot.mp3'),
+     ambient: loadSound('./sounds/ambient.mp3'),
+   ──────────────────────────────────────────────────────────── */
 
-  // Button confirm - high-pitched accent
-  function playConfirm() {
-    if (!soundEnabled) return;
-    const now = audioCtx.currentTime;
-    
-    // First tone
-    const osc1 = audioCtx.createOscillator();
-    const gain1 = audioCtx.createGain();
-    osc1.connect(gain1);
-    gain1.connect(audioCtx.destination);
-    osc1.type = 'square';
-    osc1.frequency.setValueAtTime(900, now);
-    gain1.gain.setValueAtTime(0.2, now);
-    gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
-    osc1.start(now);
-    osc1.stop(now + 0.06);
-    
-    // Second tone (delay slightly)
-    const osc2 = audioCtx.createOscillator();
-    const gain2 = audioCtx.createGain();
-    osc2.connect(gain2);
-    gain2.connect(audioCtx.destination);
-    osc2.type = 'sine';
-    osc2.frequency.setValueAtTime(1200, now + 0.04);
-    gain2.gain.setValueAtTime(0.15, now + 0.04);
-    gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.10);
-    osc2.start(now + 0.04);
-    osc2.stop(now + 0.10);
-  }
+function loadSound(src) {
+  if (!src) return null;
+  const a = new Audio(src);
+  a.preload = 'auto';
+  return a;
+}
 
-  // Hover sound - subtle electronic tick
-  function playHover() {
-    if (!soundEnabled) return;
-    const now = audioCtx.currentTime;
-    
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(500, now);
-    osc.frequency.exponentialRampToValueAtTime(350, now + 0.04);
-    gain.gain.setValueAtTime(0.15, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
-    osc.start(now);
-    osc.stop(now + 0.04);
-  }
+function playSound(key) {
+  const s = SOUNDS[key];
+  if (!s) return;
+  try { s.currentTime = 0; s.play(); } catch(e) {}
+}
 
-  // LOADING
-  const msgs = ['INITIALIZING DATABASE...','SEARCHING RECORDS...','RETRIEVING CASE FILE...','DECRYPTING DATA...','LOADING PORTFOLIO...','ACCESS GRANTED'];
-  let prog = 0, mi = 0;
-  function loadStep() {
-    prog += Math.random() * 20 + 5;
-    if (prog > 100) prog = 100;
-    document.getElementById('lbar').style.width = prog + '%';
-    document.getElementById('lmsg').textContent = msgs[Math.min(mi++, msgs.length-1)];
-    if (prog < 100) setTimeout(loadStep, 280 + Math.random() * 380);
-    else setTimeout(() => {
-      const l = document.getElementById('loading');
-      l.classList.add('out');
-      setTimeout(() => { l.style.display='none'; document.getElementById('app').classList.add('active'); }, 800);
-    }, 500);
-  }
-  setTimeout(loadStep, 700);
-
-  // CLOCK
-  function tick() {
-    const n = new Date();
-    const pad = x => String(x).padStart(2,'0');
-    document.getElementById('clock').textContent = `${pad(n.getHours())}:${pad(n.getMinutes())}:${pad(n.getSeconds())}`;
-  }
-  tick(); setInterval(tick, 1000);
-
-  // NAV
-  const sections = ['summary','projects','experience','volunteering','links','certifications'];
-  const titles =   ['SUMMARY','PROJECTS','EXPERIENCE','VOLUNTEERING','LINKS','CERTIFICATIONS'];
-  let cur = 0;
-
-  function show(name, el) {
-    playMenuClick();
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
-    document.getElementById('sec-'+name).classList.add('on');
-    document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('on'));
-    if (el) el.classList.add('on');
-    cur = sections.indexOf(name);
-    document.getElementById('ctitle').textContent = titles[cur];
-    document.querySelector('.content-body').scrollTop = 0;
-  }
-
-  function cycle(dir) {
-    cur = (cur + dir + sections.length) % sections.length;
-    const items = document.querySelectorAll('.menu-item');
-    show(sections[cur], items[cur]);
-  }
-
-  // keyboard nav
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowDown') { cycle(1); playNav(); }
-    if (e.key === 'ArrowUp') { cycle(-1); playNav(); }
+/* ── AMBIENT LOOP ───────────────────────────────────────────────
+   Starts automatically when the portfolio loads.
+   Volume is set to 0.25 so it sits quietly under UI sounds.
+   If autoplay is blocked by the browser, it waits for the
+   first user click then starts.
+   ──────────────────────────────────────────────────────────── */
+function startAmbient() {
+  const a = SOUNDS.ambient;
+  if (!a) return;
+  a.loop = true;
+  a.volume = 0.25;
+  a.play().catch(() => {
+    document.addEventListener('click', () => a.play(), { once: true });
   });
+}
 
-  // Sound toggle
-  const soundBtn = document.querySelector('.sound-toggle');
-  if (soundBtn) {
-    soundBtn.addEventListener('click', () => {
-      soundEnabled = !soundEnabled;
-      soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
-      playConfirm();
-    });
+/* ================================================================
+   LOADING
+   ================================================================ */
+const loadMsgs = [
+  'ACCESSING DATABASE...',
+  'RETRIEVING FILE...',
+  'DECRYPTING...',
+  'COMPILING PORTFOLIO...',
+  'ACCESS GRANTED'
+];
+let prog = 0, mi = 0;
+
+function loadStep() {
+  prog += Math.random() * 18 + 8;
+  if (prog > 100) prog = 100;
+  document.getElementById('lbar').style.width = prog + '%';
+  document.getElementById('lmsg').textContent = loadMsgs[Math.min(mi++, loadMsgs.length - 1)];
+
+  if (prog < 100) {
+    setTimeout(loadStep, 220 + Math.random() * 300);
+  } else {
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('out');
+      setTimeout(() => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('app').classList.add('on');
+        playSound('boot');
+        startAmbient();
+      }, 900);
+    }, 400);
   }
+}
+setTimeout(loadStep, 400);
 
-  // Add click sounds to all interactive elements
-  document.addEventListener('click', (e) => {
-    if (e.target.matches('.menu-item, .social-btn, .lcard-link, .bb-btn, .lr-link')) {
-      playMenuClick();
-    }
-  });
+/* ================================================================
+   CLOCK
+   ================================================================ */
+function tickClock() {
+  const n = new Date(), p = x => String(x).padStart(2,'0');
+  document.getElementById('clock').textContent = `${p(n.getHours())}:${p(n.getMinutes())}:${p(n.getSeconds())}`;
+}
+tickClock(); setInterval(tickClock, 1000);
 
-  // Hover sound for some elements
-  document.addEventListener('mouseover', (e) => {
-    if (soundEnabled && e.target.matches('.menu-item, .social-btn')) {
-      playHover();
-    }
-  });
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+const navSections = ['projects','experience','volunteering','certifications','education'];
+let curIdx = 0;
+
+function show(name, el) {
+  playSound('select');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
+  document.getElementById('sec-' + name).classList.add('on');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('on'));
+  if (el) el.classList.add('on');
+  curIdx = navSections.indexOf(name);
+  document.querySelector('.content-wrap').scrollTop = 0;
+}
+
+function cycleNav(dir) {
+  curIdx = (curIdx + dir + navSections.length) % navSections.length;
+  const items = document.querySelectorAll('.nav-item');
+  show(navSections[curIdx], items[curIdx]);
+  playSound('nav');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') cycleNav(1);
+  if (e.key === 'ArrowUp')   cycleNav(-1);
+});
+
+function onContact() {
+  playSound('confirm');
+  window.open('https://www.linkedin.com/in/rayyanhasangoraya', '_blank');
+}
+
+/* hover sounds */
+let lastHoverT = 0;
+document.addEventListener('mouseover', e => {
+  const now = Date.now();
+  if (now - lastHoverT < 100) return;
+  if (e.target.closest('.nav-item, .bb-btn, .proj-link, .social-icon-btn')) {
+    lastHoverT = now;
+    playSound('hover');
+  }
+});
 </script>
 </body>
 </html>
