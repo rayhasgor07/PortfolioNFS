@@ -20,12 +20,12 @@
       --text-dim: #6a8850;
     }
     * { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; overflow:hidden; }
+    html, body { height:100%; }
     body {
       background: var(--bg);
       color: var(--neon);
       font-family: 'Share Tech Mono', monospace;
-      height: 100vh; width: 100vw;
+      min-height: 100vh;
       user-select: none;
     }
     /* scanlines */
@@ -72,7 +72,7 @@
 
     /* ===== MAIN LAYOUT ===== */
     #app {
-      display:none; height:100vh; width:100vw; flex-direction:column;
+      display:none; min-height:100vh; flex-direction:column;
     }
     #app.active { display:flex; }
 
@@ -84,8 +84,10 @@
       display:flex; align-items:center; justify-content:space-between;
       flex-shrink:0;
       box-shadow: 0 2px 16px rgba(200,240,0,0.08);
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .topbar-left { display:flex; align-items:center; gap:14px; }
+    .topbar-left { display:flex; align-items:center; gap:14px; min-width:0; }
     .topbar-shield { width:30px; flex-shrink:0; }
     .topbar-title-wrap {}
     .topbar-title {
@@ -98,7 +100,7 @@
     .topbar-status { font-size:8px; letter-spacing:2px; color:var(--text-dim); margin-top:2px; }
 
     /* main body */
-    .main { display:flex; flex:1; overflow:hidden; }
+    .main { display:flex; flex:1; }
 
     /* ===== LEFT SIDEBAR ===== */
     .sidebar {
@@ -106,7 +108,7 @@
       background:var(--panel);
       border-right:2px solid var(--border);
       display:flex; flex-direction:column;
-      overflow:hidden;
+      overflow-y:auto;
     }
     .sb-name-block {
       background:linear-gradient(90deg,#243010,#181e0c);
@@ -176,6 +178,7 @@
     .content-body {
       flex:1; overflow-y:auto; padding:18px 20px;
       scrollbar-width:thin; scrollbar-color:var(--neon-dim) transparent;
+      width: 100%;
     }
     .content-body::-webkit-scrollbar { width:3px; }
     .content-body::-webkit-scrollbar-thumb { background:var(--neon-dim); }
@@ -299,6 +302,291 @@
 
     .section-sublabel { font-size:9px; letter-spacing:2px; color:var(--text-dim); margin-bottom:12px; margin-top:18px; }
     .section-sublabel:first-child { margin-top:0; }
+
+    /* ===== MOBILE RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .topbar {
+        padding: 10px 15px;
+      }
+      .topbar-title {
+        font-size: 8px;
+      }
+      .topbar-sub {
+        font-size: 7px;
+      }
+      .topbar-clock {
+        font-size: 10px;
+      }
+      .topbar-status {
+        font-size: 7px;
+      }
+
+      .main {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 2px solid var(--border);
+        max-height: auto;
+      }
+
+      .sb-menu {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding: 8px 14px;
+      }
+
+      .sb-menu-label {
+        width: 100%;
+        padding: 4px 0 8px 0;
+      }
+
+      .menu-item {
+        flex: 0 1 auto;
+        padding: 6px 10px;
+        font-size: 8px;
+        margin-right: 8px;
+        margin-bottom: 4px;
+      }
+
+      .sb-socials {
+        padding: 8px 14px;
+      }
+
+      .social-btn {
+        font-size: 6px;
+        padding: 4px 3px;
+      }
+
+      .content {
+        min-height: auto;
+      }
+
+      .content-header {
+        padding: 8px 15px;
+      }
+
+      .content-title {
+        font-size: 11px;
+      }
+
+      .content-id {
+        font-size: 7px;
+      }
+
+      .content-body {
+        padding: 15px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .sum-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sc-val {
+        font-size: 14px;
+      }
+
+      .sc-val.sm {
+        font-size: 11px;
+      }
+
+      .lcard {
+        padding: 12px 14px;
+      }
+
+      .lcard-name {
+        font-size: 10px;
+      }
+
+      .lcard-role {
+        font-size: 7px;
+      }
+
+      .lcard-desc {
+        font-size: 9px;
+      }
+
+      .vol-card {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .vol-badge {
+        font-size: 12px;
+        min-width: auto;
+      }
+
+      .tag-wrap {
+        gap: 4px;
+      }
+
+      .ntag {
+        font-size: 7px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body::after {
+        background: repeating-linear-gradient(0deg, transparent, transparent 1px, rgba(0,0,0,0.13) 1px, rgba(0,0,0,0.13) 2px);
+      }
+
+      .topbar-left {
+        gap: 8px;
+        width: 100%;
+      }
+
+      .topbar-title {
+        font-size: 7px;
+        letter-spacing: 2px;
+      }
+
+      .topbar-sub {
+        display: none;
+      }
+
+      .topbar-right {
+        width: 100%;
+        text-align: left;
+        margin-top: 5px;
+      }
+
+      .topbar-shield {
+        width: 24px;
+      }
+
+      .sb-name-block {
+        padding: 8px 12px;
+      }
+
+      .sb-label {
+        font-size: 6px;
+      }
+
+      .sb-name {
+        font-size: 11px;
+      }
+
+      .sb-tagline {
+        font-size: 8px;
+      }
+
+      .sb-stats {
+        padding: 8px 12px;
+      }
+
+      .stat-row {
+        padding: 4px 0;
+        font-size: 8px;
+      }
+
+      .menu-item {
+        padding: 5px 8px;
+        font-size: 7px;
+        margin-right: 6px;
+      }
+
+      .mi-dot {
+        width: 6px;
+        height: 6px;
+      }
+
+      .content-body {
+        padding: 12px;
+      }
+
+      .sum-grid {
+        gap: 8px;
+      }
+
+      .sum-card {
+        padding: 10px 12px;
+      }
+
+      .sc-label {
+        font-size: 6px;
+      }
+
+      .sc-val {
+        font-size: 12px;
+      }
+
+      .bio-box {
+        padding: 12px 14px;
+        font-size: 9px;
+      }
+
+      .lcard {
+        padding: 11px 13px;
+      }
+
+      .lcard-top {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .lcard-name {
+        font-size: 9px;
+      }
+
+      .lcard-desc {
+        font-size: 8px;
+        line-height: 1.6;
+      }
+
+      .lcard-links {
+        gap: 5px;
+      }
+
+      .lcard-link {
+        font-size: 7px;
+        padding: 3px 8px;
+      }
+
+      .cert-row {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .cert-num {
+        font-size: 18px;
+        min-width: 30px;
+      }
+
+      .cert-name {
+        font-size: 9px;
+      }
+
+      .cert-badge {
+        font-size: 6px;
+      }
+
+      .link-row {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+
+      .lr-num {
+        font-size: 22px;
+        min-width: 40px;
+      }
+
+      .lr-name {
+        font-size: 10px;
+      }
+
+      .lr-desc {
+        font-size: 9px;
+      }
+
+      .lr-link {
+        font-size: 7px;
+        padding: 4px 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -315,8 +603,8 @@
     <circle cx="50" cy="35" r="11" fill="none" stroke="#c8f000" stroke-width="1.5"/>
     <text x="50" y="39" text-anchor="middle" font-size="10" fill="#c8f000" font-family="monospace" font-weight="bold">RPD</text>
   </svg>
-  <div class="load-dept">ROCKPORT POLICE DEPARTMENT</div>
-  <div class="load-sub">CRIMINAL INTELLIGENCE DIVISION</div>
+  <div class="load-dept">DEVELOPER PROFILE</div>
+  <div class="load-sub">PROFESSIONAL PORTFOLIO</div>
   <div class="load-bar-wrap"><div class="load-bar" id="lbar"></div></div>
   <div class="load-msg" id="lmsg">INITIALIZING...</div>
 </div>
@@ -332,8 +620,8 @@
         <text x="50" y="67" text-anchor="middle" font-size="11" fill="#c8f000" font-family="monospace" font-weight="bold">RPD</text>
       </svg>
       <div class="topbar-title-wrap">
-        <div class="topbar-title">ROCKPORT POLICE DEPARTMENT — CRIMINAL INTELLIGENCE DIVISION</div>
-        <div class="topbar-sub">CASE FILE: RHG-2026 &nbsp;·&nbsp; CLASSIFICATION: RESTRICTED &nbsp;·&nbsp; OPERATOR: CROSS</div>
+        <div class="topbar-title">DEVELOPER PROFILE — PROFESSIONAL PORTFOLIO</div>
+        <div class="topbar-sub">PORTFOLIO FILE: RHG-2026 &nbsp;·&nbsp; CLASSIFICATION: PUBLIC &nbsp;·&nbsp; OPERATOR: RAYYAN</div>
       </div>
     </div>
     <div class="topbar-right">
@@ -347,7 +635,7 @@
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sb-name-block">
-        <div class="sb-label">SUSPECT</div>
+        <div class="sb-label">DEVELOPER</div>
         <div class="sb-name">GORAYA, RAYYAN H.</div>
         <div class="sb-tagline">Math @ UWaterloo · Game Dev · Software Dev</div>
       </div>
@@ -408,7 +696,7 @@
     <div class="content">
       <div class="content-header">
         <div class="content-title" id="ctitle">SUMMARY</div>
-        <div class="content-id">ID: RHG-2026 &nbsp;·&nbsp; <span class="cursor-blink">█</span></div>
+        <div class="content-id">PROFILE ID: RHG-2026 &nbsp;·&nbsp; <span class="cursor-blink">█</span></div>
       </div>
 
       <div class="content-body">
@@ -697,6 +985,7 @@
           <div class="bb-btn" onclick="cycle(-1)"><span class="k">↑</span> PREV</div>
           <div class="bb-btn" onclick="cycle(1)"><span class="k">↓</span> NEXT</div>
           <div class="bb-btn" onclick="window.open('https://www.linkedin.com/in/rayyanhasangoraya','_blank')"><span class="k">↵</span> CONTACT</div>
+          <div class="bb-btn sound-toggle"><span class="k">♪</span> SOUND</div>
         </div>
         <div class="bb-info">OPEN TO FALL 2026 INTERNSHIPS</div>
       </div>
@@ -705,6 +994,108 @@
 </div><!-- app -->
 
 <script>
+  // SOUND SYSTEM - NFS Most Wanted inspired
+  let soundEnabled = true;
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  
+  // Menu click - deep punch with metallic resonance
+  function playMenuClick() {
+    if (!soundEnabled) return;
+    const now = audioCtx.currentTime;
+    
+    // Deep bass hit
+    const bass = audioCtx.createOscillator();
+    const bassGain = audioCtx.createGain();
+    bass.connect(bassGain);
+    bassGain.connect(audioCtx.destination);
+    bass.type = 'sine';
+    bass.frequency.setValueAtTime(220, now);
+    bass.frequency.exponentialRampToValueAtTime(80, now + 0.08);
+    bassGain.gain.setValueAtTime(0.4, now);
+    bassGain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+    bass.start(now);
+    bass.stop(now + 0.08);
+    
+    // Metallic high-freq click
+    const click = audioCtx.createOscillator();
+    const clickGain = audioCtx.createGain();
+    click.connect(clickGain);
+    clickGain.connect(audioCtx.destination);
+    click.type = 'triangle';
+    click.frequency.setValueAtTime(800, now);
+    click.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+    clickGain.gain.setValueAtTime(0.25, now);
+    clickGain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+    click.start(now);
+    click.stop(now + 0.05);
+  }
+
+  // Navigation sound - sci-fi sweep
+  function playNav() {
+    if (!soundEnabled) return;
+    const now = audioCtx.currentTime;
+    
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, now);
+    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.12);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  }
+
+  // Button confirm - high-pitched accent
+  function playConfirm() {
+    if (!soundEnabled) return;
+    const now = audioCtx.currentTime;
+    
+    // First tone
+    const osc1 = audioCtx.createOscillator();
+    const gain1 = audioCtx.createGain();
+    osc1.connect(gain1);
+    gain1.connect(audioCtx.destination);
+    osc1.type = 'square';
+    osc1.frequency.setValueAtTime(900, now);
+    gain1.gain.setValueAtTime(0.2, now);
+    gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+    osc1.start(now);
+    osc1.stop(now + 0.06);
+    
+    // Second tone (delay slightly)
+    const osc2 = audioCtx.createOscillator();
+    const gain2 = audioCtx.createGain();
+    osc2.connect(gain2);
+    gain2.connect(audioCtx.destination);
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(1200, now + 0.04);
+    gain2.gain.setValueAtTime(0.15, now + 0.04);
+    gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.10);
+    osc2.start(now + 0.04);
+    osc2.stop(now + 0.10);
+  }
+
+  // Hover sound - subtle electronic tick
+  function playHover() {
+    if (!soundEnabled) return;
+    const now = audioCtx.currentTime;
+    
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(500, now);
+    osc.frequency.exponentialRampToValueAtTime(350, now + 0.04);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.04);
+    osc.start(now);
+    osc.stop(now + 0.04);
+  }
+
   // LOADING
   const msgs = ['INITIALIZING DATABASE...','SEARCHING RECORDS...','RETRIEVING CASE FILE...','DECRYPTING DATA...','LOADING PORTFOLIO...','ACCESS GRANTED'];
   let prog = 0, mi = 0;
@@ -736,6 +1127,7 @@
   let cur = 0;
 
   function show(name, el) {
+    playMenuClick();
     document.querySelectorAll('.section').forEach(s => s.classList.remove('on'));
     document.getElementById('sec-'+name).classList.add('on');
     document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('on'));
@@ -753,8 +1145,32 @@
 
   // keyboard nav
   document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowDown') cycle(1);
-    if (e.key === 'ArrowUp') cycle(-1);
+    if (e.key === 'ArrowDown') { cycle(1); playNav(); }
+    if (e.key === 'ArrowUp') { cycle(-1); playNav(); }
+  });
+
+  // Sound toggle
+  const soundBtn = document.querySelector('.sound-toggle');
+  if (soundBtn) {
+    soundBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      soundBtn.textContent = soundEnabled ? '🔊' : '🔇';
+      playConfirm();
+    });
+  }
+
+  // Add click sounds to all interactive elements
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('.menu-item, .social-btn, .lcard-link, .bb-btn, .lr-link')) {
+      playMenuClick();
+    }
+  });
+
+  // Hover sound for some elements
+  document.addEventListener('mouseover', (e) => {
+    if (soundEnabled && e.target.matches('.menu-item, .social-btn')) {
+      playHover();
+    }
   });
 </script>
 </body>
