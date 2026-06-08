@@ -8,6 +8,7 @@ const SOUNDS = {
 };
 
 let audioUnlocked = false;
+let audioEnabled = true;  // Audio is on by default
 function unlockAudio() {
   if (audioUnlocked) return;
   audioUnlocked = true;
@@ -32,6 +33,7 @@ function loadSound(src) {
 }
 
 function playSound(key) {
+  if (!audioEnabled) return;
   const s = SOUNDS[key];
   if (!s) return;
   try {
@@ -43,11 +45,48 @@ function playSound(key) {
 
 function startAmbient() {
   const a = SOUNDS.ambient;
-  if (!a) return;
-  a.loop = true;
+  if (!a || !audioEnabled) return;
+  
+  const startTime = 1;   // Start at 1 second
+  const endTime = 10;    // End at 10 seconds
+  
+  a.currentTime = startTime;
   a.play().catch(() => {
-    document.addEventListener('click', () => a.play(), { once: true });
+    document.addEventListener('click', () => {
+      if (audioEnabled) {
+        a.currentTime = startTime;
+        a.play();
+      }
+    }, { once: true });
   });
+  
+  // Loop the segment when it reaches the end
+  a.addEventListener('timeupdate', () => {
+    if (audioEnabled && a.currentTime >= endTime) {
+      a.currentTime = startTime;
+    }
+  });
+}
+
+function toggleAudio() {
+  audioEnabled = !audioEnabled;
+  const btn = document.getElementById('audioToggle');
+  const a = SOUNDS.ambient;
+  
+  if (audioEnabled) {
+    btn.textContent = '🔊';
+    btn.title = 'Turn off audio';
+    if (a) {
+      a.currentTime = 1;
+      a.play().catch(() => {});
+    }
+  } else {
+    btn.textContent = '🔇';
+    btn.title = 'Turn on audio';
+    if (a) {
+      a.pause();
+    }
+  }
 }
 
 /* ================================================================
@@ -161,5 +200,13 @@ document.addEventListener('mouseover', e => {
   if (e.target.closest('.nav-item, .bb-btn, .proj-link, .social-icon-btn')) {
     lastHoverT = now;
     playSound('hover');
+  }
+});
+
+/* audio toggle */
+document.addEventListener('DOMContentLoaded', () => {
+  const audioBtn = document.getElementById('audioToggle');
+  if (audioBtn) {
+    audioBtn.addEventListener('click', toggleAudio);
   }
 });
