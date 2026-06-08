@@ -41,12 +41,6 @@ function playSound(key) {
   } catch(e) {}
 }
 
-/* ── AMBIENT LOOP ───────────────────────────────────────────────
-   Starts automatically when the portfolio loads.
-   Volume is set to 0.25 so it sits quietly under UI sounds.
-   If autoplay is blocked by the browser, it waits for the
-   first user click then starts.
-   ──────────────────────────────────────────────────────────── */
 function startAmbient() {
   const a = SOUNDS.ambient;
   if (!a) return;
@@ -66,7 +60,34 @@ const loadMsgs = [
   'COMPILING PORTFOLIO...',
   'ACCESS GRANTED'
 ];
+
+const username = 'RAYYAN HASAN GORAYA';
+const password = '••••••••••••••••••';
 let prog = 0, mi = 0;
+let uIdx = 0, pIdx = 0;
+let typeFinished = false;
+
+function typeCharacter() {
+  // Type username
+  if (uIdx < username.length) {
+    document.getElementById('usernameText').textContent = username.substring(0, ++uIdx);
+    setTimeout(typeCharacter, 40);
+    return;
+  }
+  
+  // Type password
+  if (pIdx < password.length) {
+    document.getElementById('passwordText').textContent = password.substring(0, ++pIdx);
+    setTimeout(typeCharacter, 30);
+    return;
+  }
+  
+  // Typing finished
+  if (!typeFinished) {
+    typeFinished = true;
+    setTimeout(loadStep, 300);
+  }
+}
 
 function loadStep() {
   prog += Math.random() * 18 + 8;
@@ -88,7 +109,7 @@ function loadStep() {
     }, 400);
   }
 }
-setTimeout(loadStep, 400);
+setTimeout(typeCharacter, 400);
 
 /* ================================================================
    CLOCK
