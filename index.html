@@ -83,7 +83,13 @@
       width:0%; transition:width 0.15s linear;
     }
     .load-msg { font-size:9px; letter-spacing:2px; color:var(--dim); height:16px; }
-
+    .load-note {
+      margin-top: 12px;
+      font-size:8px;
+      letter-spacing:2px;
+      color:var(--muted);
+      opacity:0.8;
+    }
     /* ── LAYOUT ── */
     #app { display:none; position:relative; z-index:1; min-height:100vh; }
     #app.on { display:block; }
@@ -372,6 +378,7 @@
   <div class="load-sub">LOADING PORTFOLIO</div>
   <div class="load-bar-wrap"><div class="load-bar" id="lbar"></div></div>
   <div class="load-msg" id="lmsg">INITIALIZING...</div>
+  <div class="load-note" id="audioHint">Click or tap once to enable sound</div>
 </div>
 
 <!-- APP -->
@@ -647,26 +654,31 @@
 </div><!-- app -->
 
 <script>
-/* ================================================================
-   SOUND SLOTS — drop your audio files in here
-   Replace the src strings with your actual sound file paths.
-   All sounds are optional — missing files fail silently.
-   ================================================================ */
-const SOUNDS = {
-  boot:    null,   // plays on loading complete / app reveal
-  select:  null,   // plays on nav item click
-  nav:     null,   // plays on arrow key / prev-next
+const SOUNDS = {  
+  loading: loadSound('./loading.mp3'),   // plays during loading screen updates
+  select:  loadSound('./button.mp3'),   // plays on nav item click
+  nav:     loadSound('./button.mp3'),   // plays on arrow key / prev-next
   hover:   null,   // plays on button/nav hover
   confirm: null,   // plays on contact button click
-  ambient: null,   // loops in the background — add your file here
+  ambient: loadSound('./song.mp3'),   // loops in the background — add your file here
 };
 
-/* ── HOW TO ADD SOUNDS ─────────────────────────────────────────
-   Replace any null with: loadSound('./path/to/your-file.mp3')
-   Example:
-     boot:    loadSound('./sounds/boot.mp3'),
-     ambient: loadSound('./sounds/ambient.mp3'),
-   ──────────────────────────────────────────────────────────── */
+let audioUnlocked = false;
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  const hint = document.getElementById('audioHint');
+  if (hint) hint.style.display = 'none';
+  Object.values(SOUNDS).forEach(sound => {
+    if (!sound) return;
+    sound.play().then(() => sound.pause()).catch(() => {});
+  });
+}
+
+document.addEventListener('click', unlockAudio, { once: true });
+document.addEventListener('keydown', unlockAudio, { once: true });
+document.addEventListener('mousedown', unlockAudio, { once: true });
+document.addEventListener('touchstart', unlockAudio, { once: true });
 
 function loadSound(src) {
   if (!src) return null;
@@ -678,7 +690,11 @@ function loadSound(src) {
 function playSound(key) {
   const s = SOUNDS[key];
   if (!s) return;
-  try { s.currentTime = 0; s.play(); } catch(e) {}
+  try {
+    const clone = s.cloneNode(true);
+    clone.currentTime = 0;
+    clone.play().catch(() => {});
+  } catch(e) {}
 }
 
 /* ── AMBIENT LOOP ───────────────────────────────────────────────
@@ -716,6 +732,7 @@ function loadStep() {
   document.getElementById('lmsg').textContent = loadMsgs[Math.min(mi++, loadMsgs.length - 1)];
 
   if (prog < 100) {
+    playSound('loading');
     setTimeout(loadStep, 220 + Math.random() * 300);
   } else {
     setTimeout(() => {
@@ -723,7 +740,6 @@ function loadStep() {
       setTimeout(() => {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('app').classList.add('on');
-        playSound('boot');
         startAmbient();
       }, 900);
     }, 400);
